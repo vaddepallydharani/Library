@@ -5,7 +5,6 @@ import com.good.Library.entity.BookDetailsEntity;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface IBookService {
     public BookDetailsEntity addNewBook(BookDetailsEntity bookDetails) throws BookNameExistException;
 
