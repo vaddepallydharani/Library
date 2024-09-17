@@ -24,7 +24,6 @@ public class BookServiceImpl implements IBookService {
         }
 
         else{
-            //return new BookDetailsEntity();
             throw new BookNameExistException("Book is already exist");
             }
     }
