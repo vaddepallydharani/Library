@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookServiceImpl implements IBookService {
+public class BookServiceImpl implements BookService {
 
     @Autowired
     BookRepository bookRepository;
@@ -33,7 +33,7 @@ public class BookServiceImpl implements IBookService {
     public List<BookDetailsEntity> getAllBooks() {
         List<BookDetailsEntity> listOfBooks=bookRepository.findAll();
         if(listOfBooks == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Books found in Library");
         }
         return listOfBooks;
     }
@@ -42,7 +42,7 @@ public class BookServiceImpl implements IBookService {
         Optional<BookDetailsEntity> book = bookRepository.findByBookName(bookName);
         if(book == null )
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"There is no book with that name. Please enter the correct name");
         }
             return book;
     }

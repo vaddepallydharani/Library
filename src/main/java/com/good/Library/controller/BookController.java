@@ -2,7 +2,7 @@ package com.good.Library.controller;
 
 import com.good.Library.BookNameExistException;
 import com.good.Library.entity.BookDetailsEntity;
-import com.good.Library.service.BookServiceImpl;
+import com.good.Library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class BookController {
 
     @Autowired
-    BookServiceImpl bookService;
+    BookService bookService;
 
     @PostMapping("/new-book")
     public BookDetailsEntity addNewBook(@RequestBody BookDetailsEntity bookDetails) throws BookNameExistException {
