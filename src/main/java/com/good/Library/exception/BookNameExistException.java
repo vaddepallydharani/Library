@@ -1,4 +1,4 @@
-package com.good.Library;
+package com.good.Library.exception;
 
 public class BookNameExistException extends RuntimeException{
 

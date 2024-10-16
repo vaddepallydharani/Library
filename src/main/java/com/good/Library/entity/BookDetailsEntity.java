@@ -10,6 +10,7 @@ import lombok.Data;
 public class BookDetailsEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int bookId;
     public String bookName;
     public String bookAuthor;
