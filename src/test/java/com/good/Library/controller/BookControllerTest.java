@@ -66,6 +66,8 @@ public class BookControllerTest {
         newBook.setBookAuthor("Harrington");
         newBook.setBookPlace("A1");
         return newBook;
+
+
     }
 
     @Test
@@ -86,8 +88,6 @@ public class BookControllerTest {
 
         assertNotNull(result);
         assertNotNull(result.andReturn().getResponse().getContentAsString());
-
-
     }
 
     public static String asJsonString(final Object obj) {

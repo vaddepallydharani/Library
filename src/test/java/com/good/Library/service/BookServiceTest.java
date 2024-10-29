@@ -1,6 +1,6 @@
 package com.good.Library.service;
 
-import com.good.Library.BookNameExistException;
+import com.good.Library.exception.BookNameExistException;
 import com.good.Library.entity.BookDetailsEntity;
 import com.good.Library.repository.BookRepository;
 import org.junit.jupiter.api.Test;
@@ -116,7 +116,7 @@ public class BookServiceTest {
                 () -> bookService.getBookByName(bookDetails.getBookName()));
 
         assertEquals(HttpStatus.NOT_FOUND,responseStatusException.getStatusCode());
-        assertEquals("There is no book with that name. Please enter the correct name",responseStatusException.getReason());
+        assertEquals("We don't have a book by the id you gave. Please try again.",responseStatusException.getReason());
     }
 
 

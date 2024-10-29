@@ -1,6 +1,6 @@
 package com.good.Library.controller;
 
-import com.good.Library.BookNameExistException;
+import com.good.Library.exception.BookNameExistException;
 import com.good.Library.entity.BookDetailsEntity;
 import com.good.Library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
