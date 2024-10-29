@@ -17,7 +17,7 @@ public class UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int userId;
+    public Integer userId;
 
 
     @NotNull

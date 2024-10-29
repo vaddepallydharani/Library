@@ -116,7 +116,7 @@ public class BookServiceTest {
                 () -> bookService.getBookByName(bookDetails.getBookName()));
 
         assertEquals(HttpStatus.NOT_FOUND,responseStatusException.getStatusCode());
-        assertEquals("There is no book with that name. Please enter the correct name",responseStatusException.getReason());
+        assertEquals("We don't have a book by the id you gave. Please try again.",responseStatusException.getReason());
     }
 
 
