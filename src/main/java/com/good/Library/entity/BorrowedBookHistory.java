@@ -3,17 +3,16 @@ package com.good.Library.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.grammars.hql.HqlParser;
-import org.springframework.data.auditing.CurrentDateTimeProvider;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
-public class BorrowedBook {
+public class BorrowedBookHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer historyId;
 
     @NotNull
     @Column(unique=true)
@@ -25,10 +24,17 @@ public class BorrowedBook {
 
     private String bookName;
 
-    private LocalDate borrowedDate; //yyyy-MM-dd
+    private LocalDate borrowedDate;
 
-    public BorrowedBook() {
-        this.borrowedDate = LocalDate.now();
+    private LocalDate returnDate;
+    public BorrowedBookHistory() {
+        this.returnDate = LocalDate.now();
     }
+
+    @NotNull
+    @Column(name = "returned", length = 1)
+    public char returned;
+
+
 
 }
