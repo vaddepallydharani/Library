@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService{
       if(!borrowedBookByBookId.isPresent()){
           savedBorrowBook = borrowedBookRepository.save(borrowedBook);
       }else{
-          //TODO
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This book is assigned to someone");
       }
 
         //this logic is to make book availability N in booksEntity.
@@ -113,11 +113,8 @@ public class UserServiceImpl implements UserService{
                 bookRepository.save(bookDetailsEntity);
             }
         }else{
-            //ToDo
-
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Please enter valid bookId");
         }
-
-
     }
 
 
