@@ -14,8 +14,6 @@ public class BorrowedBookHistory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer historyId;
 
-    @NotNull
-    @Column(unique=true)
     private Integer customerId;
 
     private String customerName;
@@ -27,9 +25,6 @@ public class BorrowedBookHistory {
     private LocalDate borrowedDate;
 
     private LocalDate returnDate;
-    public BorrowedBookHistory() {
-        this.returnDate = LocalDate.now();
-    }
 
     @NotNull
     @Column(name = "returned", length = 1)
