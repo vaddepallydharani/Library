@@ -1,18 +1,18 @@
 package com.good.Library.service;
 
-import com.good.Library.entity.BookDetailsEntity;
-import com.good.Library.entity.BorrowedBook;
+import com.good.Library.entity.*;
 import com.good.Library.exception.BookNameExistException;
 import com.good.Library.exception.UserAlreadyExistException;
-import com.good.Library.entity.User;
-import com.good.Library.entity.UserRole;
 import com.good.Library.repository.BookRepository;
+import com.good.Library.repository.BorrowedBookHistoryRepository;
 import com.good.Library.repository.BorrowedBookRepository;
 import com.good.Library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +27,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     BorrowedBookRepository borrowedBookRepository;
+
+    @Autowired
+    BorrowedBookHistoryRepository borrowedBookHistoryRepository;
 
     public boolean isAdmin(User user){
         return user.getUserRole() == UserRole.ADMIN;
@@ -79,10 +82,13 @@ public class UserServiceImpl implements UserService{
         //First we need to get the borrowed book details based on book_Id
       Optional<BorrowedBook> borrowedBookByBookId = borrowedBookRepository.findByBookId(borrowedBook.getBookId());
       if(!borrowedBookByBookId.isPresent()){
+          borrowedBook.setBorrowedDate(LocalDate.now());
           savedBorrowBook = borrowedBookRepository.save(borrowedBook);
       }else{
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This book is assigned to someone");
       }
+
+        saveBorrowedBookHistory(savedBorrowBook);
 
         //this logic is to make book availability N in booksEntity.
         Optional<BookDetailsEntity> bookDetailsEntity = null;
@@ -97,13 +103,32 @@ public class UserServiceImpl implements UserService{
         return savedBorrowBook;
     }
 
-    @Override
-    public void deleteBookFromCustomer(Integer id) {
+    private void saveBorrowedBookHistory(BorrowedBook savedBorrowBook) {
+        BorrowedBookHistory borrowedBookHistory = new BorrowedBookHistory();
+        borrowedBookHistory.setBookId(savedBorrowBook.getBookId());
+        borrowedBookHistory.setBookName(savedBorrowBook.getBookName());
+        borrowedBookHistory.setCustomerId(savedBorrowBook.getCustomerId());
+        borrowedBookHistory.setCustomerName(savedBorrowBook.getCustomerName());
+        borrowedBookHistory.setBorrowedDate(LocalDate.now());
+        borrowedBookHistory.setReturnDate(null);
+        borrowedBookHistory.setReturned('N');
+        borrowedBookHistoryRepository.save(borrowedBookHistory);
+    }
 
-        Optional<BorrowedBook> getBorrowedBookById  = borrowedBookRepository.findByBookId(id);
+    @Override
+    public void deleteBookFromCustomer(Integer bookId) {
+
+        Optional<BorrowedBook> getBorrowedBookById  = borrowedBookRepository.findByBookId(bookId);
         if(getBorrowedBookById.isPresent()){
             BorrowedBook borrowedBook = getBorrowedBookById.get();
             borrowedBookRepository.delete(borrowedBook);
+
+            BorrowedBookHistory borrowedBookHistory = borrowedBookHistoryRepository.findByBookId(bookId);
+            borrowedBookHistory.setReturnDate(LocalDate.now());
+            borrowedBookHistory.setReturned('Y');
+            borrowedBookHistoryRepository.save(borrowedBookHistory);
+
+
 
             Optional<BookDetailsEntity> bookDetails= bookRepository.findById(borrowedBook.getBookId());
             if (bookDetails.isPresent()) {

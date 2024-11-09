@@ -26,9 +26,4 @@ public class BorrowedBook {
     private String bookName;
 
     private LocalDate borrowedDate; //yyyy-MM-dd
-
-    public BorrowedBook() {
-        this.borrowedDate = LocalDate.now();
-    }
-
 }
