@@ -3,15 +3,13 @@ package com.good.Library.service;
 import com.good.Library.entity.BookDetailsEntity;
 import com.good.Library.entity.BorrowedBook;
 import com.good.Library.entity.User;
-
+import com.good.Library.model.HistoryOfBooksResponse;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    public boolean isAdmin(User user);
-
-    public User registration(User user);
+     User registration(User user);
 
     List<BookDetailsEntity> getAllBooks();
 
@@ -24,4 +22,6 @@ public interface UserService {
     BorrowedBook addingBooksToCustomer(BorrowedBook borrowedBook);
 
     void deleteBookFromCustomer(Integer id);
+
+    List<HistoryOfBooksResponse> historyOfBorrowedAndCheckoutBooks(Integer customerId, String customerName, String status);
 }

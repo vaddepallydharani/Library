@@ -27,8 +27,8 @@ public class BorrowedBookHistory {
     private LocalDate returnDate;
 
     @NotNull
-    @Column(name = "returned", length = 1)
-    public char returned;
+    @Column(name = "returned")
+    public String returned;
 
 
 
