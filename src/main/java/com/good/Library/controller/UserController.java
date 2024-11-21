@@ -1,10 +1,13 @@
 package com.good.Library.controller;
 
+import com.good.Library.constants.PatternConstants;
 import com.good.Library.entity.BookDetailsEntity;
 import com.good.Library.entity.BorrowedBook;
 import com.good.Library.entity.User;
+import com.good.Library.model.HistoryOfBooksResponse;
 import com.good.Library.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +60,11 @@ public class UserController {
         return new ResponseEntity<>("Checked out book Successfully", HttpStatus.OK);
     }
 
-
+    @GetMapping("/history-of-customer")
+    public List<HistoryOfBooksResponse> historyOfBorrowedAndCheckoutBooks(
+            @RequestParam(required = false) Integer customerId,
+            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) @Pattern(regexp = PatternConstants.BOOK_STATUS_PATTERN) String status){
+        return userService.historyOfBorrowedAndCheckoutBooks(customerId, customerName, status);
+    }
 }
