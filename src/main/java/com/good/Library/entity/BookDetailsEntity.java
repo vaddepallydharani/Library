@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name="bookDetails")
-public class BookDetailsEntity {
+public class BookDetailsEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

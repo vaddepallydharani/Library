@@ -1,7 +1,6 @@
 package com.good.Library.service;
 
-//import com.good.Library.BorrowedBookMapper;
-
+import com.good.Library.BorrowedBookMapper;
 import com.good.Library.entity.*;
 import com.good.Library.exception.BookNameExistException;
 import com.good.Library.exception.UserAlreadyExistException;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.util.*;
 
@@ -24,13 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     BookRepository bookRepository;
-
     @Autowired
     BorrowedBookRepository borrowedBookRepository;
-
     @Autowired
     BorrowedBookHistoryRepository borrowedBookHistoryRepository;
 
@@ -141,34 +136,20 @@ public class UserServiceImpl implements UserService {
             if(status.equalsIgnoreCase("returned")){
                 finalStatus = "Y";
             } else if(status.equalsIgnoreCase("borrowed")){
+
                 finalStatus = "N";
             }
-
         }
 
-        List<BorrowedBookHistory> bookHistoryList;
 
-        bookHistoryList = borrowedBookHistoryRepository.findByCustomerAndReturned(customerName, customerId, finalStatus);
 
-        List<HistoryOfBooksResponse> list = new ArrayList<>();
-
+        List<BorrowedBookHistory> bookHistoryList = borrowedBookHistoryRepository.findByCustomerAndReturned(customerName, customerId, finalStatus);
+        List<HistoryOfBooksResponse> responseList = new ArrayList<>();
         for (BorrowedBookHistory bookHistory : bookHistoryList) {
-
-            HistoryOfBooksResponse historyOfBooksResponse = new HistoryOfBooksResponse();
-            historyOfBooksResponse.setCustomerId(bookHistory.getCustomerId());
-            historyOfBooksResponse.setCustomerName(bookHistory.getCustomerName());
-            historyOfBooksResponse.setBookId(bookHistory.getBookId());
-            historyOfBooksResponse.setBookName(bookHistory.getBookName());
-            historyOfBooksResponse.setBorrowedDate(bookHistory.getBorrowedDate());
-            if (bookHistory.getReturned().equalsIgnoreCase("Y")) {
-                historyOfBooksResponse.setReturnDate(String.valueOf(bookHistory.getReturnDate()));
-            } else {
-                historyOfBooksResponse.setReturnDate("no return date");
-            }
-            historyOfBooksResponse.setStatus(bookHistory.getReturned().equals("Y") ? "returned" : "not returned");
-            list.add(historyOfBooksResponse);
+            HistoryOfBooksResponse response = BorrowedBookMapper.INSTANCE.mapStatusToReturned(bookHistory);
+            responseList.add(response);
         }
-        return list;
+        return responseList;
     }
 
 }
